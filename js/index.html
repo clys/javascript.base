@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="zn">
+    <meta charset="UTF-8">
+    <title>js.js</title>
+    <script src="http://cdn.bootcss.com/jquery/1.9.1/jquery.js"></script>
+    <script src="http://cdn.bootcss.com/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="js.js"></script>
+    <script>
+        var demo = new BaseJs({
+            pool: {
+                containerName: 'js'
+            },
+            init: function () {
+                console.log(1);
+            },
+            inits: {
+                a: function () {
+                    var that = demo;
+                    that.setEle('asd','啊啊啊')
+                }
+            }
+        });
+
+    </script>
+</head>
+<body data-container="js">
+
+</body>
+</html>
