@@ -64,6 +64,9 @@ BaseJs.prototype = {
     },
     inits: {
         base: function (that) {
+            if(!that){
+                return;
+            }
             var $container = $('[' + that.pool.containerNameKey + '="' + that.pool.containerName + '"]');
             if ($container.size() == 0) return;
             that.setEle("$container", $container);
