@@ -77,10 +77,10 @@ BaseJs.prototype = {
             });
         }
     },
-    runInits:function(){
+    runInits:function(context){
         var that = this;
         $.each(that.inits, function (i, initFn) {
-            initFn.name != 'base' && initFn();
+            initFn.name != 'base' && initFn.apply(context);
         });
     }
 };
