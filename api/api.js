@@ -54,7 +54,17 @@ ApiUtils = {
                 eval(js);
             }
             , error: function () {
-                errorMsg = api[0] + '加载失败，请确认api字符串是否正确';
+                errorMsg += api[0] + '加载失败，请确认api字符串是否正确;';
+            }
+        });
+
+
+        $.each($(api), function (i, v) {
+            context = apiFn;
+            apiFn = apiFn[v];
+            if (!apiFn) {
+                errorMsg += '调用api异常:' + v + '不存在(' + api.join('.') + ');';
+                return false;
             }
         });
 
@@ -62,14 +72,7 @@ ApiUtils = {
             console.error(errorMsg);
             return;
         }
-        $.each($(api), function (i, v) {
-            context = apiFn;
-            apiFn = apiFn[v];
-            if(!apiFn){
-                console.error('调用api异常:' + v + '不存在');
-                return;
-            }
-        });
+
         return apiFn.apply(context, Array.prototype.slice.call(arguments, 1))
     },
     addApi: function (key, o) {
@@ -90,7 +93,7 @@ ApiUtils = {
         var that = ApiUtils;
         if (typeof fn === 'function') {
             data.url = (typeof ApiUtils.apiBaseUrl === 'undefined' ? '' : ApiUtils.apiBaseUrl)
-            + ApiUtils.buildApiUrl(fn) + (data.cache == true ? '' : '?_=' + new Date().getTime());
+                + ApiUtils.buildApiUrl(fn) + (data.cache == true ? '' : '?_=' + new Date().getTime());
         }
         data.dataType = (data.dataType || 'JSON').toUpperCase();
         data.type = (data.type || 'GET').toUpperCase();
@@ -126,7 +129,7 @@ ApiUtils = {
         }
         return $.ajax(data);
     },
-    errorMsg:function (msg,m) {
+    errorMsg: function (msg, m) {
         if (YTMsg) {
             YTDialog && YTDialog.close();
             YTMsg.error(msg, m || 3);
