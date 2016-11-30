@@ -57,6 +57,27 @@ BaseJs.prototype = {
         }
         return $es;
     },
+    getRole: function (key) {
+        var that = this, $container = that.getEle('$container');
+        if (typeof key === 'string') {
+            key = [key];
+        } else if (key.constructor != Array) {
+            return null
+        }
+        var $es = $(), $e;
+        $.each(key, function (i, k) {
+            $e = that.getEle("$" + k);
+            if (!$e || $e.size() == 0) {
+                $e = $container.find('[data-role="' + k + '"]');
+                if ($e.size() == 0) {
+                    return true;
+                }
+                that.setEle("$" + k, $e);
+            }
+            $es = $es.add($e);
+        });
+        return $es;
+    },
     init: function () {
         var that = this;
         that.inits.base(that);
@@ -64,7 +85,7 @@ BaseJs.prototype = {
     },
     inits: {
         base: function (that) {
-            if(!that){
+            if (!that) {
                 return;
             }
             var $container = $('[' + that.pool.containerNameKey + '="' + that.pool.containerName + '"]');
@@ -77,7 +98,7 @@ BaseJs.prototype = {
             });
         }
     },
-    runInits:function(context){
+    runInits: function (context) {
         var that = this;
         $.each(that.inits, function (i, initFn) {
             initFn.name != 'base' && initFn.apply(context);
