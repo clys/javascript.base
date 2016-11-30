@@ -33,10 +33,11 @@ BaseJs.prototype = {
         } else {
             return that;
         }
-        var keys = _.keys(data), key;
-        for (var i = 0, len = keys.length; i < len; i++) {
-            key = keys[i];
-            that.pool.element[key] = data[key];
+        for (var k in data) {
+            if (!data.hasOwnProperty(k)) {
+                continue;
+            }
+            that.pool.element[k] = data[k];
         }
         return that;
     },
