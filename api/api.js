@@ -17,7 +17,7 @@ Api = function () {
  * data:(大体与jQuery中的ajax的相同)
  *  dataType默认为JSON
  *  type默认为GET
- *  dataType为JSON并且type为GET或POST时:(
+ *  dataType为JSON并且type为QGET或POST时:(
  *      success预处理返回结果，原回调success接收到的参数为result.result ，result.success为失败时调用 error 第一个入参为result 第二个入参为true
  *      当error不存在时:
  *        会使用预设的error，同时success中的 result.success为失败时 会打印errorMsg与result.message
@@ -110,7 +110,10 @@ ApiUtils = {
                     if (typeof error === "function") {
                         error(XMLHttpRequest, true);
                     } else {
-                        if (typeof data.exError === "function" && data.exError(XMLHttpRequest, true) === false) return;
+                        if (typeof data.exError === "function" && data.exError(XMLHttpRequest, true) === false) {
+                            console.log(data.exError);
+                            return;
+                        }
                         if (XMLHttpRequest.message) {
                             that.errorMsg((data.errorMsg ? (data.errorMsg + ":") : "") + XMLHttpRequest.message, 3);
                         } else if (data.errorMsg) {
@@ -148,6 +151,9 @@ ApiUtils = {
                             location.reload();
                         }, 3000);
                         that.errorMsg('亲~您已经太久没有操作了哦，3秒后自动刷新页面~');
+                        return true;
+                    case '404':
+                        that.errorMsg('访问的链接不存在', 3);
                         return true;
                     case '500':
                         that.errorMsg('系统出现异常', 3);
